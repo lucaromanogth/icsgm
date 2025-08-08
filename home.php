@@ -44,1295 +44,611 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 <link rel="stylesheet" type="text/css" href="css/StyleSheet.css" />
 <link rel="stylesheet" type="text/css" href="css/DsawStyleSheet.css" media="all" />
 <meta name="robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
 <div id="login">
 <div style="margin-top: -20pt; padding: 0pt;">
 
-		<!-- inizio colonna sinistra -->
-		<div class="left">
-			<div style="height: 100px; margin-top:30px;">
-			</div>
-			<div class="infoText">
-				<p>
-					<strong><br/>Utente:
-						<div class="logon">
-EOQ;
-						echo $array_s_login['username'];
-						echo <<< EOQ
-						</div>
-						<br />
-						<a href="logout.php"> Logout</a>
-					</strong>
-					<br />
-					<br />
-						Il men&ugrave a destra presenta le applicazioni che puoi utilizzare in accordo con le politiche aziendali.
-					<br />
-					<br />
-					<strong>
-						Hai necessit&agrave di utilizzare un'applicazione che trovi disabilitata?
-					</strong>
-					<br />
-						Richiedine l'autorizzazione per l'utilizzo cliccando sul link seguente:
-					<br />
-						<a href="mailto:sistemi@$dominio?subject=Richiesta autorizzazione per l'utilizzo di risorse nel portale di amministrazione di $dominio"> Richiesta Autorizzazione</a>.
-					<br />
-					<br />
-EOQ;
-					if ($type_user==2 || $type_user==1){
-						$connect = connectDB();
-						$query = " SELECT * FROM ";
-						$query .= " inc_ute_map ";
-						$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-						$result = mysqli_query($connect, $query);
-						$count = mysqli_num_rows($result);
-						disconnectDB($connect);
-
-						if ($count > 0) {
-							echo <<< EOQ
-							<br><strong>
-EOQ;
-						if ($count > 1) {
-							$richieste = 'richieste';
-						}
-						else {
-							$richieste = 'richiesta ';
-						}
-							echo '<a class="moderatenews" href="incarichi/lista_moderazione_incarichi.php">Hai '.$count.' '.$richieste.' di inserimento incarichi da moderare.</a>';
-							echo <<< EOQ
-							</strong>
-EOQ;
-						}
-
-						$query = " SELECT * FROM ";
-						$query .= " carta_docente ";
-						$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-						$connect = connectDB();
-						$result = mysqli_query($connect, $query);
-						$count = mysqli_num_rows($result);
-						disconnectDB($connect);
-
-						if ($count > 0) {
-							echo <<< EOQ
-							<br><strong>
-EOQ;
-						if ($count > 1) {
-							$richieste = 'richieste';
-						}
-						else {
-							$richieste = 'richiesta ';
-						}
-							echo '<br/><a class="moderatenews" href="carta_docente/lista_moderazione_carta.php">Hai '.$count.' '.$richieste.' di inserimento carta del docente da moderare.</a>';
-							echo <<< EOQ
-							</strong>
-EOQ;
-						}
-
-						$query = " SELECT * FROM ";
-						$query .= " bonus_docente ";
-						$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-						$connect = connectDB();
-						$result = mysqli_query($connect, $query);
-						$count = mysqli_num_rows($result);
-						disconnectDB($connect);
-
-						if ($count > 0) {
-							echo <<< EOQ
-							<br><strong>
-EOQ;
-						if ($count > 1) {
-							$richieste = 'richieste';
-						}
-						else {
-							$richieste = 'richiesta ';
-						}
-							echo '<br/><a class="moderatenews" href="bonus_docente/lista_moderazione_bonus.php">Hai '.$count.' '.$richieste.' di inserimento bonus premialit&agrave; docente da moderare.</a>';
-							echo <<< EOQ
-							</strong>
-EOQ;
-						}
-
-						$query = " SELECT * FROM ";
-						$query .= " bonus_docente ";
-						$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '2017-2018'";
-
-						$connect = connectDB();
-						$result = mysqli_query($connect, $query);
-						$count = mysqli_num_rows($result);
-						disconnectDB($connect);
-
-						if ($count > 0) {
-							echo <<< EOQ
-							<br><strong>
-EOQ;
-						if ($count > 1) {
-							$richieste = 'richieste';
-						}
-						else {
-							$richieste = 'richiesta ';
-						}
-							echo '<br/><a class="moderatenews" href="bonus_docente/2017_2018/lista_moderazione_bonus.php">Hai '.$count.' '.$richieste.' di inserimento bonus premialit&agrave; docente a.s. 2017-2018 da moderare.</a>';
-							echo <<< EOQ
-							</strong>
-EOQ;
-						}
-					}
-
-					echo '<br/>
-					Accesso alla casella di posta elettronica:</strong>
-					<strong><a class="moderatenews" href="https://webmail.aruba.it/">WebMail Aruba</a></strong>';
-							echo <<< EOQ
-EOQ;
-
-					$query = " SELECT * FROM live_meeting WHERE id_doc = $id_user ";
-					$connect = connectDB();
-					$result = mysqli_query($connect, $query);
-					$count = mysqli_num_rows($result);
-					disconnectDB($connect);
-
-					if ($count > 0)
-					{
-						echo '<br/><br/>';
-						echo 'Accesso al </strong> <strong><a class="moderatenews" href="live/live.php">Live Meeting</a></strong>';
-					}
-
-					echo <<< EOQ
-EOQ;
-
-					echo <<< EOQ
-
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
-
-
-						Per problemi di carattere tecnico contatta il servizio di <a href="mailto:sistemi@$dominio?subject=Segnalazione%20dalla%20pagina%20di%20Login%20del%20portale%20di%20amministrazione%20">assistenza</a>.
-					<br />
-				</p>
-			</div>
-		</div>
-		<!-- fine colonna sinistra -->
-		<!-- inizio colonna destra -->
-		<div class="right">
-			<div id="loginForm">
-				<br />
-				<div>
-					<p class="mail_black">
-						<strong><br/>Elenco delle applicazioni disponibili:</strong>
-					</p>
-					<p class="info">
-					</p>
-EOQ;
-
-					$connect = connectDB();
-					$res_select_abilitato = getUserAllows($array_s_login);
-					disconnectDB($connect);
-					echo <<< EOQ
-					<div id="container">
-EOQ;
-				if ($type_user==2 || $type_user==1){
-
-						echo <<< EOQ
-						<div class="cella1" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_UTENTI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/addusers_off.png" alt="Gestione Utenti" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="users/archive.php"><img src="img/addusers_on.png" alt="Gestione Utenti" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella2" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_UTENTI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/docenti_off.png" alt="Gestione Docenti" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="docenti/archive.php"><img src="img/docenti_on.png" alt="Gestione Docenti" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella3" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_ALUNNI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/alunni_off.png" alt="Gestione Alunni" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="alunni/archive.php"><img src="img/alunni_on.png" alt="Gestione Alunni" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella4" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_UTENTI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/materie_off.png" alt="Gestione Materie" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="materie/archive.php"><img src="img/materie_on.png" alt="Gestione Materie" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-
-						<div class="cella5" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_UTENTI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/classi_off.png" alt="Gestione Classi" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="classi/archive.php"><img src="img/classi_on.png" alt="Gestione Classi" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-
-						<div class="cella1b" style="top: 85px;">
-						<p align="center" class="description_ico">Gestione Utenti</p>
-						</div>
-						<div class="cella2b" style="top: 85px;">
-						<p align="center" class="description_ico">Gestione Docenti</p>
-						</div>
-						<div class="cella3b" style="top: 85px;">
-						<p align="center" class="description_ico">Gestione Alunni</p>
-						</div>
-						<div class="cella4b" style="top: 85px;">
-						<p align="center" class="description_ico">Gestione Materie</p>
-						</div>
-						<div class="cella5b" style="top: 85px;">
-						<p align="center" class="description_ico">Gestione Classi</p>
-						</div>
-
-
-						<div class="cella1c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_UTENTI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/indicatori_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="competenze/archive_competenze.php"><img src="img/indicatori_on.png" alt="competenze" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella2c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_UTENTI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/obiettivi_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="obiettivi/archive_obiettivi.php"><img src="img/obiettivi_on.png" alt="obiettivi" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella3c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/incarichi_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="incarichi/lista.php"><img src="img/incarichi_on.png" alt="incarichi" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella4c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_CORSI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/stats_off.png" alt="corsi" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="corsi/lista.php"><img src="img/stats_on.png" alt="corsi" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella5c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="incarichi/archivio_report.php"><img src="img/archivio_on.png" alt="incarichi" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella1d" style="top: 205px;">
-						<p align="center" class="description_ico">Gestione Traguardi Nazionali</p>
-						</div>
-
-						<div class="cella2d" style="top: 205px;">
-						<p align="center" class="description_ico">Gestione Obiettivi Nazionali</p>
-						</div>
-
-						<div class="cella3d" style="top: 205px;">
-						<p align="center" class="description_ico">Gestione Incarichi</p>
-						</div>
-
-						<div class="cella4d" style="top: 205px;">
-						<p align="center" class="description_ico">Gestione Corsi Aggiornamento</p>
-						</div>
-
-						<div class="cella5d" style="top: 205px;">
-						<p align="center" class="description_ico">Archivio Report Incarichi</p>
-						</div>
-
-EOQ;
-
-					if ($type_user==1){
-						echo <<< EOQ
-						<div class="cella1c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="programmazione/lista_programmazioni.php"><img src="img/archivio_on.png" alt="Report programmazioni" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella2c" style="top: 265px;">
-							<p class="ico_ico">
-								<a target="blank" href="scrutini/archivio_scrutinio.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-							</p>
-						</div>
-
-						<div class="cella3c" style="top: 265px;">
-							<p class="ico_ico">
-								<a target="blank" href="scrutini/archivio_scrutinio_doc.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-							</p>
-						</div>
-
-						<div class="cella4c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="relazione_finale/lista_relazioni.php"><img src="img/archivio_on.png" alt="Report relazioni finali" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella5c" style="top: 265px;">
-							<p class="ico_ico">
-								<a target="blank" href="settings/edit.php"><img src="img/settings.png" alt="settings" width="60" height="60"></img></a>
-							</p>
-						</div>
-
-EOQ;
-						echo <<< EOQ
-
-						<div class="cella1d" style="top: 325px;">
-						<p align="center" class="description_ico">Report programmazioni</p>
-						</div>
-
-						<div class="cella2d" style="top: 325px;">
-						<p align="center" class="description_ico">Gestione Scrutini</p>
-						</div>
-
-						<div class="cella3d" style="top: 325px;">
-						<p align="center" class="description_ico">Gestione Voti Proposti</p>
-						</div>
-
-						<div class="cella4d" style="top: 325px;">
-						<p align="center" class="description_ico">Report relazioni finali</p>
-						</div>
-
-						<div class="cella5d" style="top: 325px;">
-						<p align="center" class="description_ico">Impostazioni</p>
-						</div>
-
-
-						<div class="cella1e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/indicatori_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="certificazione_competenze/lista_profili.php"><img src="img/indicatori_on.png" alt="profili_certificazione_competenza" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella2e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/indicatori_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="certificazione_competenze/archivio_certificazioni.php"><img src="img/scrutini_on.png" alt="archivio_certificazioni" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella3e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="certificazione_competenze/report_certificazione.php"><img src="img/archivio_on.png" alt="report_certificazione" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella4e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/indicatori_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="dsa/lista_competenze.php"><img src="img/indicatori_on.png" alt="profili_certificazione_competenza" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella5e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/incarichi_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="carta_docente/lista_categorie_spesa.php"><img src="img/incarichi_on.png" alt="categorie di spesa" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella1f" style="top: 445px;">
-						<p align="center" class="description_ico">Gestione Profili Certificazione Competenza</p>
-						</div>
-
-						<div class="cella2f" style="top: 445px;">
-						<p align="center" class="description_ico">Gestione Scrutini Certificazione Competenza</p>
-						</div>
-
-						<div class="cella3f" style="top: 445px;">
-						<p align="center" class="description_ico">Report Certificazione Competenza</p>
-						</div>
-
-						<div class="cella4f" style="top: 445px;">
-						<p align="center" class="description_ico">Gestione Competenze DSA</p>
-						</div>
-
-						<div class="cella5f" style="top: 445px;">
-						<p align="center" class="description_ico">Gestione Categorie di Spesa</p>
-						</div>
-
-
-						<div class="cella1g" style="top: 505px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="carta_docente/archivio_report.php"><img src="img/archivio_on.png" alt="categorie di spesa" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella2g" style="top: 505px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/incarichi_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="bonus_docente/lista_categorie_bonus.php"><img src="img/incarichi_on.png" alt="categorie bonus" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella3g" style="top: 505px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/indicatori_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="bonus_docente/archivio_report.php"><img src="img/indicatori_on.png" alt="bonus premialita" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella4g" style="top: 505px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/indicatori_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="dad/lista_descrittori.php"><img src="img/indicatori_on.png" alt="descrittori dad" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella5g" style="top: 505px;">
-							<p class="ico_ico">
-								<a target="blank" href="dad/scrutini_dad.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-							</p>
-						</div>
-
-						<div class="cella1h" style="top: 565px;">
-						<p align="center" class="description_ico">Archivio Report Carta del Docente</p>
-						</div>
-
-						<div class="cella2h" style="top: 565px;">
-						<p align="center" class="description_ico">Gestione Categorie Bonus Premialit&agrave;</p>
-						</div>
-
-						<div class="cella3h" style="top: 565px;">
-						<p align="center" class="description_ico">Archivio Report Bonus Premialit&agrave</p>
-						</div>
-
-						<div class="cella4h" style="top: 565px;">
-						<p align="center" class="description_ico">Gestione descrittori DaD</p>
-						</div>
-
-						<div class="cella5h" style="top: 565px;">
-						<p align="center" class="description_ico">Gestione Scrutini DaD</p>
-						</div>
-EOQ;
-
-					}
-					else if ($type_user==2){
-						echo <<< EOQ
-
-
-						<div class="cella1c" style="top: 265px;">
-							<p class="ico_ico">
-								<a target="blank" href="scrutini/archivio_scrutinio_doc.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-							</p>
-						</div>
-
-						<div class="cella2c" style="top: 265px;">
-							<p class="ico_ico">
-								<a target="blank" href="settings/edit.php"><img src="img/settings.png" alt="settings" width="60" height="60"></img></a>
-							</p>
-						</div>
-
-
-						<div class="cella3c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_UTENTI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/indicatori_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="certificazione_competenze/lista_profili.php"><img src="img/indicatori_on.png" alt="profili_certificazione_competenza" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella4c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/incarichi_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="carta_docente/lista_categorie_spesa.php"><img src="img/incarichi_on.png" alt="categorie di spesa" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella5c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="carta_docente/archivio_report.php"><img src="img/archivio_on.png" alt="categorie di spesa" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-
-EOQ;
-						echo <<< EOQ
-
-
-						<div class="cella1d" style="top: 325px;">
-						<p align="center" class="description_ico">Gestione Voti Proposti</p>
-						</div>
-
-						<div class="cella2d" style="top: 325px;">
-						<p align="center" class="description_ico">Impostazioni</p>
-						</div>
-
-						<div class="cella3d" style="top: 325px;">
-						<p align="center" class="description_ico">Gestione Profili Certificazione Competenza</p>
-						</div>
-
-						<div class="cella4d" style="top: 325px;">
-						<p align="center" class="description_ico">Gestione Categorie di Spesa</p>
-						</div>
-
-						<div class="cella5d" style="top: 325px;">
-						<p align="center" class="description_ico">Archivio Report Carta del Docente</p>
-						</div>
-
-
-						<div class="cella1e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/incarichi_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="bonus_docente/lista_categorie_bonus.php"><img src="img/incarichi_on.png" alt="categorie bonus" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella2e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="bonus_docente/archivio_report.php"><img src="img/archivio_on.png" alt="bonus premialita" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella3e" style="top: 385px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_MNG'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="dad/lista_descrittori.php"><img src="img/archivio_on.png" alt="descrittori dad" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-EOQ;
-						echo <<< EOQ
-						<div class="cella1f" style="top: 445px;">
-						<p align="center" class="description_ico">Gestione Categorie Bonus Premialit&agrave;</p>
-						</div>
-
-EOQ;
-						echo <<< EOQ
-						<div class="cella2f" style="top: 445px;">
-						<p align="center" class="description_ico">Archivio Report Bonus Premialit&agrave;</p>
-						</div>
-EOQ;
-
-						echo <<< EOQ
-						<div class="cella3f" style="top: 445px;">
-						<p align="center" class="description_ico">Gestione descrittori DaD</p>
-						</div>
-EOQ;
-
-					}
-
-				} else if ($type_user==3){
-
-					echo <<< EOQ
-
-						<div class="cella1" style="top: 25px;">
-							<p class="ico_ico">
-
-EOQ;
-							if ($res_select_abilitato['ALLOW_VALUTAZIONE_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/addusers_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-							}
-							else {
-								echo <<< EOQ
-										<a target="blank" href="alunni/ricerca.php">
-											<img src="img/addusers_on.png" alt="anagrafica" width="60" height="60"></img>
-										</a>
-EOQ;
-							}
-
-
-							echo <<< EOQ
-
-							</p>
-						</div>
-
-						<div class="cella2" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_INCARICHI_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/incarichi_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-							}
-
-							else {
-								$connect = connectDB();
-								$query = "SELECT stato FROM inc_ute_map WHERE id_utente=".$id_user." AND anno_scolastico = '".$anno_scolastico."'";
-								$result = mysqli_query($connect, $query);
-
-								if ($row = mysqli_fetch_assoc($result)) {
-
-									if ($row['stato'] == 'BOZZA') {
-
-									echo <<< EOQ
-										<a target="blank" href="incarichi/lista_sel.php">
-											<img src="img/incarichi_on.png" alt="incarichi" width="60" height="60"></img>
-										</a>
-EOQ;
-									}
-									else {
-
-										echo <<< EOQ
-										<a target="blank" href="incarichi/report_incarichi.php">
-											<img src="img/incarichi_on.png" alt="incarichi" width="60" height="60"></img>
-										</a>
-EOQ;
-									}
-								}
-								else {
-									echo <<< EOQ
-										<a target="blank" href="incarichi/lista_sel.php">
-											<img src="img/incarichi_on.png" alt="incarichi" width="60" height="60"></img>
-										</a>
-EOQ;
-								}
-							}
-
-
-								echo <<< EOQ
-							</p>
-						</div>
-						<div class="cella3" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_CORSI_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/stats_off.png" alt="corsi" width="60" height="60"></img>
-EOQ;
-								}
-								else {
-								$connect = connectDB();
-								$query = "SELECT stato FROM inc_ute_map WHERE id_utente=".$id_user." AND anno_scolastico = '".$anno_scolastico."'";
-								$result = mysqli_query($connect, $query);
-
-								if ($row = mysqli_fetch_assoc($result)) {
-
-									if ($row['stato'] == 'BOZZA') {
-
-									echo <<< EOQ
-										<a target="blank" href="corsi/lista_sel.php">
-											<img src="img/stats_on.png" alt="corsi" width="60" height="60"></img>
-										</a>
-EOQ;
-									}
-									else {
-
-										echo <<< EOQ
-										<a target="blank" href="incarichi/report_incarichi.php">
-											<img src="img/stats_on.png" alt="corsi" width="60" height="60"></img>
-										</a>
-EOQ;
-									}
-								}
-								else {
-									echo <<< EOQ
-										<a target="blank" href="corsi/lista_sel.php">
-											<img src="img/stats_on.png" alt="corsi" width="60" height="60"></img>
-										</a>
-EOQ;
-								}
-							}
-
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella4" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_VALUTAZIONE_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/valutazione_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-							}
-							else {
-								echo <<< EOQ
-										<a target="blank" href="valutazione/valutazione.php">
-											<img src="img/valutazione_on.png" alt="valutazione" width="60" height="60"></img>
-										</a>
-EOQ;
-							}
-
-
-							echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella5" style="top: 25px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_PROGRAMMAZIONE_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/programmazione_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-							}
-							else {
-								echo <<< EOQ
-										<a target="blank" href="programmazione/archive.php">
-											<img src="img/programmazione_on.png" alt="programmazione" width="60" height="60"></img>
-										</a>
-EOQ;
-							}
-
-
-
-							echo <<< EOQ
-							</p>
-						</div>
-
-
-						<div class="cella1b" style="top: 85px;">
-						<p align="center" class="description_ico">Ricerca Alunni</p>
-						</div>
-						<div class="cella2b" style="top: 85px;">
-						<p align="center" class="description_ico">Selezione Incarichi</p>
-						</div>
-						<div class="cella3b" style="top: 85px;">
-						<p align="center" class="description_ico">Selezione Corsi Aggiornamento</p>
-						</div>
-						<div class="cella4b" style="top: 85px;">
-						<p align="center" class="description_ico">Inserimento Valutazione</p>
-						</div>
-						<div class="cella5b" style="top: 85px;">
-						<p align="center" class="description_ico">Inserimento Programmazione</p>
-						</div>
-
-
-						<div class="cella1c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_VALUTAZIONE_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/archivio_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="valutazione/seleziona_report.php"><img src="img/archivio_on.png" alt="report" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella2c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_VALUTAZIONE_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/diario_bordo_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-								<a target="blank" href="diario/eventi.php"><img src="img/diario_bordo_on.png" alt="report" width="60" height="60"></img></a>
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-						<div class="cella4c" style="top: 145px;">
-							<p class="ico_ico">
-EOQ;
-							if ($res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'NO') {
-
-								echo <<< EOQ
-								<img src="img/scrutini_off.png" alt="stats" width="60" height="60"></img>
-EOQ;
-								} else {
-								echo <<< EOQ
-
-								<a target="blank" href="scrutini/archivio.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-
-EOQ;
-								}
-								echo <<< EOQ
-							</p>
-						</div>
-
-EOQ;
-					$connect = connectDB();
-					$query = " SELECT * FROM ";
-					$query .= " doc_cla_map ";
-					$query .= " WHERE id_doc = ".$id_user;
-					$query .= " AND coordinatore = 1 ";
-
-					$result = mysqli_query($connect, $query);
-					if (!$result) {
-						$message  = 'Invalid query: ' . mysqli_error() . "\nWhole query: " . $query;
-						die($message);
-					}
-					$check = mysqli_num_rows($result);
-					disconnectDB($connect);
-
-
-					//if ($check>0 && $res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'SI') {
-            // <a target="blank" href="scrutini/archivio_scrutinio.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-						echo <<< EOQ
-						<div class="cella5c" style="top: 145px;">
-							<p class="ico_ico">
-							   <a target="blank" href="scrutini/archivio_scrutinio.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-							</p>
-						</div>
-EOQ;
-					//}
-					//else {
-						echo <<< EOQ
-						<div class="cella3c" style="top: 145px;">
-							<p class="ico_ico">
-								<a target="blank" href="relazione_finale/archive.php"><img src="img/indicatori_on.png" alt="relazione finale" width="60" height="60"></img></a>
-							</p>
-						</div>
-EOQ;
-					//}
-
-						echo <<< EOQ
-
-						<div class="cella1d" style="top: 205px;">
-						<p align="center" class="description_ico">Report Valutazioni</p>
-						</div>
-						<div class="cella2d" style="top: 205px;">
-						<p align="center" class="description_ico">Diario di Bordo</p>
-						</div>
-						<div class="cella3d" style="top: 205px;">
-						<p align="center" class="description_ico">Inserimento Relazione Finale</p>
-						</div>
-EOQ;
-
-					//if ($check>0 && $res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'SI') {
-						echo <<< EOQ
-						<div class="cella5d" style="top: 205px;">
-						<p align="center" class="description_ico">Consultazione Scrutini</p>
-						</div>
-EOQ;
-					//}
-					/*else {
-						echo <<< EOQ
-						<div class="cella5d" style="top: 205px;">
-						<p align="center" class="description_ico">Consultazione Scrutini</p>
-						</div>	*/
-EOQ;
-					//}
-
-					//else {
-						echo <<< EOQ
-						<div class="cella4d" style="top: 205px;">
-						<p align="center" class="description_ico">Inserimento Voti Proposti Scrutini</p>
-						</div>
-
-
-EOQ;
-					//}
-
-
-						echo <<< EOQ
-						<div class="cella1c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-
-								echo <<< EOQ
-								<a target="blank" href="certificazione_competenze/lista_proposte.php"><img src="img/scrutini_on.png" alt="Inserimento Certificazioni Competenza Proposte" width="60" height="60"></img></a>
-EOQ;
-
-								echo <<< EOQ
-							</p>
-						</div>
-
-EOQ;
-
-						echo <<< EOQ
-						<div class="cella2c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-
-								echo <<< EOQ
-								<a target="blank" href="carta_docente/lista_sel.php"><img src="img/indicatori_on.png" alt="Inserimento Carta del Docente" width="60" height="60"></img></a>
-EOQ;
-
-								echo <<< EOQ
-							</p>
-						</div>
-EOQ;
-
-						echo <<< EOQ
-						<div class="cella3c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-
-								echo <<< EOQ
-								<a target="blank" href="bonus_docente/lista_sel.php"><img src="img/indicatori_on.png" alt="Inserimento Bonus Premialit&agrave; Docente" width="60" height="60"></img></a>
-EOQ;
-
-								echo <<< EOQ
-							</p>
-						</div>
-
-EOQ;
-
-						echo <<< EOQ
-						<div class="cella4c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-
-								echo <<< EOQ
-								<a target="blank" href="dad/ins_valutazione_dad.php"><img src="img/video_on.png" alt="Inserimento Valutazione DaD" width="60" height="60"></img></a>
-EOQ;
-
-								echo <<< EOQ
-							</p>
-						</div>
-
-EOQ;
-						if ( ($res_select_abilitato['ALLOW_DSA_INS'] == 'SI') || isAllowDsaIns($array_s_login['id']) ) {
-								echo <<< EOQ
-						<div class="cella5c" style="top: 265px;">
-							<p class="ico_ico">
-EOQ;
-								echo <<< EOQ
-								<a target="blank" href="dsa/lista_osservazioni.php"><img src="img/indicatori_on.png" alt="Inserimento Osservazioni DSA" width="60" height="60"></img></a>
-EOQ;
-
-								echo <<< EOQ
-							</p>
-						</div>
-EOQ;
-						}
-								echo <<< EOQ
-						<div class="cella1d" style="top: 325px;">
-						<p align="center" class="description_ico">Inserimento Certificazioni Competenza Proposte</p>
-						</div>
-
-EOQ;
-						echo <<< EOQ
-						<div class="cella2d" style="top: 325px;">
-						<p align="center" class="description_ico">Inserimento Carta del Docente</p>
-						</div>
-
-EOQ;
-						echo <<< EOQ
-						<div class="cella3d" style="top: 325px;">
-						<p align="center" class="description_ico">Inserimento Bonus Premialit&agrave Docente</p>
-						</div>
-
-EOQ;
-						echo <<< EOQ
-						<div class="cella4d" style="top: 325px;">
-						<p align="center" class="description_ico">Inserimento Valutazione DaD</p>
-						</div>
-
-EOQ;
-						if ($res_select_abilitato['ALLOW_DSA_INS'] == 'SI' || isAllowDsaIns($array_s_login['id'])) {
-								echo <<< EOQ
-						<div class="cella5d" style="top: 325px;">
-						<p align="center" class="description_ico">Inserimento Osservazioni DSA</p>
-						</div>
-EOQ;
-						}
-								echo <<< EOQ
-
-EOQ;
-				}
-
-				echo <<< EOQ
-
-
+		<div class="container">
+			<div class="row">
+				<!-- inizio colonna sinistra -->
+				<div class="col-md-4">
+					<div style="height: 100px; margin-top:30px;">
 					</div>
+					<div class="infoText">
+						<p>
+							<strong><br/>Utente:
+								<div class="logon">
+		EOQ;
+								echo $array_s_login['username'];
+								echo <<< EOQ
+								</div>
+								<br />
+								<a href="logout.php"> Logout</a>
+							</strong>
+							<br />
+							<br />
+								Il men&ugrave a destra presenta le applicazioni che puoi utilizzare in accordo con le politiche aziendali.
+							<br />
+							<br />
+							<strong>
+								Hai necessit&agrave di utilizzare un'applicazione che trovi disabilitata?
+							</strong>
+							<br />
+								Richiedine l'autorizzazione per l'utilizzo cliccando sul link seguente:
+							<br />
+								<a href="mailto:sistemi@$dominio?subject=Richiesta autorizzazione per l'utilizzo di risorse nel portale di amministrazione di $dominio"> Richiesta Autorizzazione</a>.
+							<br />
+							<br />
+		EOQ;
+							if ($type_user==2 || $type_user==1){
+								$connect = connectDB();
+								$query = " SELECT * FROM ";
+								$query .= " inc_ute_map ";
+								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
+
+								$result = mysqli_query($connect, $query);
+								$count = mysqli_num_rows($result);
+								disconnectDB($connect);
+
+								if ($count > 0) {
+									echo <<< EOQ
+									<br><strong>
+		EOQ;
+								if ($count > 1) {
+									$richieste = 'richieste';
+								}
+								else {
+									$richieste = 'richiesta ';
+								}
+									echo '<a class="moderatenews" href="incarichi/lista_moderazione_incarichi.php">Hai '.$count.' '.$richieste.' di inserimento incarichi da moderare.</a>';
+									echo <<< EOQ
+									</strong>
+		EOQ;
+								}
+
+								$query = " SELECT * FROM ";
+								$query .= " carta_docente ";
+								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
+
+								$connect = connectDB();
+								$result = mysqli_query($connect, $query);
+								$count = mysqli_num_rows($result);
+								disconnectDB($connect);
+
+								if ($count > 0) {
+									echo <<< EOQ
+									<br><strong>
+		EOQ;
+								if ($count > 1) {
+									$richieste = 'richieste';
+								}
+								else {
+									$richieste = 'richiesta ';
+								}
+									echo '<br/><a class="moderatenews" href="carta_docente/lista_moderazione_carta.php">Hai '.$count.' '.$richieste.' di inserimento carta del docente da moderare.</a>';
+									echo <<< EOQ
+									</strong>
+		EOQ;
+								}
+
+								$query = " SELECT * FROM ";
+								$query .= " bonus_docente ";
+								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
+
+								$connect = connectDB();
+								$result = mysqli_query($connect, $query);
+								$count = mysqli_num_rows($result);
+								disconnectDB($connect);
+
+								if ($count > 0) {
+									echo <<< EOQ
+									<br><strong>
+		EOQ;
+								if ($count > 1) {
+									$richieste = 'richieste';
+								}
+								else {
+									$richieste = 'richiesta ';
+								}
+									echo '<br/><a class="moderatenews" href="bonus_docente/lista_moderazione_bonus.php">Hai '.$count.' '.$richieste.' di inserimento bonus premialit&agrave; docente da moderare.</a>';
+									echo <<< EOQ
+									</strong>
+		EOQ;
+								}
+
+								$query = " SELECT * FROM ";
+								$query .= " bonus_docente ";
+								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '2017-2018'";
+
+								$connect = connectDB();
+								$result = mysqli_query($connect, $query);
+								$count = mysqli_num_rows($result);
+								disconnectDB($connect);
+
+								if ($count > 0) {
+									echo <<< EOQ
+									<br><strong>
+		EOQ;
+								if ($count > 1) {
+									$richieste = 'richieste';
+								}
+								else {
+									$richieste = 'richiesta ';
+								}
+									echo '<br/><a class="moderatenews" href="bonus_docente/2017_2018/lista_moderazione_bonus.php">Hai '.$count.' '.$richieste.' di inserimento bonus premialit&agrave; docente a.s. 2017-2018 da moderare.</a>';
+									echo <<< EOQ
+									</strong>
+		EOQ;
+								}
+							}
+
+							echo '<br/>
+							Accesso alla casella di posta elettronica:</strong>
+							<strong><a class="moderatenews" href="https://webmail.aruba.it/">WebMail Aruba</a></strong>';
+									echo <<< EOQ
+		EOQ;
+
+							$query = " SELECT * FROM live_meeting WHERE id_doc = $id_user ";
+							$connect = connectDB();
+							$result = mysqli_query($connect, $query);
+							$count = mysqli_num_rows($result);
+							disconnectDB($connect);
+
+							if ($count > 0)
+							{
+								echo '<br/><br/>';
+								echo 'Accesso al </strong> <strong><a class="moderatenews" href="live/live.php">Live Meeting</a></strong>';
+							}
+
+							echo <<< EOQ
+		EOQ;
+
+							echo <<< EOQ
+
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
 
 
-					<br />
-					<div>
-						<span class="checkbox">
-
-
-						</span>
+								Per problemi di carattere tecnico contatta il servizio di <a href="mailto:sistemi@$dominio?subject=Segnalazione%20dalla%20pagina%20di%20Login%20del%20portale%20di%20amministrazione%20">assistenza</a>.
+							<br />
+						</p>
 					</div>
-					<br />
-
 				</div>
-			</div>
-		</div>
+				<!-- fine colonna sinistra -->
+				<!-- inizio colonna destra -->
+				<div class="col-md-8">
+					<div id="loginForm">
+						<br />
+						<div>
+							<p class="mail_black">
+								<strong><br/>Elenco delle applicazioni disponibili:</strong>
+							</p>
+							<p class="info">
+							</p>
+		EOQ;
+
+							$connect = connectDB();
+							$res_select_abilitato = getUserAllows($array_s_login);
+							disconnectDB($connect);
+							echo <<< EOQ
+							<div class="row">
+		EOQ;
+						if ($type_user==2 || $type_user==1){
+
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="users/archive.php" class="text-decoration-none">
+										<i class="fas fa-users fa-3x"></i>
+										<p class="description_ico">Gestione Utenti</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="docenti/archive.php" class="text-decoration-none">
+										<i class="fas fa-user-tie fa-3x"></i>
+										<p class="description_ico">Gestione Docenti</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="alunni/archive.php" class="text-decoration-none">
+										<i class="fas fa-user-graduate fa-3x"></i>
+										<p class="description_ico">Gestione Alunni</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="materie/archive.php" class="text-decoration-none">
+										<i class="fas fa-book fa-3x"></i>
+										<p class="description_ico">Gestione Materie</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="classi/archive.php" class="text-decoration-none">
+										<i class="fas fa-school fa-3x"></i>
+										<p class="description_ico">Gestione Classi</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="competenze/archive_competenze.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Gestione Traguardi Nazionali</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="obiettivi/archive_obiettivi.php" class="text-decoration-none">
+										<i class="fas fa-bullseye fa-3x"></i>
+										<p class="description_ico">Gestione Obiettivi Nazionali</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="incarichi/lista.php" class="text-decoration-none">
+										<i class="fas fa-file-signature fa-3x"></i>
+										<p class="description_ico">Gestione Incarichi</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="corsi/lista.php" class="text-decoration-none">
+										<i class="fas fa-chart-bar fa-3x"></i>
+										<p class="description_ico">Gestione Corsi Aggiornamento</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="incarichi/archivio_report.php" class="text-decoration-none">
+										<i class="fas fa-archive fa-3x"></i>
+										<p class="description_ico">Archivio Report Incarichi</p>
+									</a>
+								</div>
+		EOQ;
+
+							if ($type_user==1){
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="programmazione/lista_programmazioni.php" class="text-decoration-none">
+										<i class="fas fa-archive fa-3x"></i>
+										<p class="description_ico">Report programmazioni</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="scrutini/archivio_scrutinio.php" class="text-decoration-none">
+										<i class="fas fa-balance-scale fa-3x"></i>
+										<p class="description_ico">Gestione Scrutini</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="scrutini/archivio_scrutinio_doc.php" class="text-decoration-none">
+										<i class="fas fa-clipboard-check fa-3x"></i>
+										<p class="description_ico">Gestione Voti Proposti</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="relazione_finale/lista_relazioni.php" class="text-decoration-none">
+										<i class="fas fa-archive fa-3x"></i>
+										<p class="description_ico">Report relazioni finali</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="settings/edit.php" class="text-decoration-none">
+										<i class="fas fa-cog fa-3x"></i>
+										<p class="description_ico">Impostazioni</p>
+									</a>
+								</div>
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="certificazione_competenze/lista_profili.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Gestione Profili Certificazione Competenza</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="certificazione_competenze/archivio_certificazioni.php" class="text-decoration-none">
+										<i class="fas fa-balance-scale fa-3x"></i>
+										<p class="description_ico">Gestione Scrutini Certificazione Competenza</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="certificazione_competenze/report_certificazione.php" class="text-decoration-none">
+										<i class="fas fa-archive fa-3x"></i>
+										<p class="description_ico">Report Certificazione Competenza</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="dsa/lista_competenze.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Gestione Competenze DSA</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="carta_docente/lista_categorie_spesa.php" class="text-decoration-none">
+										<i class="fas fa-file-signature fa-3x"></i>
+										<p class="description_ico">Gestione Categorie di Spesa</p>
+									</a>
+								</div>
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="carta_docente/archivio_report.php" class="text-decoration-none">
+										<i class="fas fa-archive fa-3x"></i>
+										<p class="description_ico">Archivio Report Carta del Docente</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="bonus_docente/lista_categorie_bonus.php" class="text-decoration-none">
+										<i class="fas fa-file-signature fa-3x"></i>
+										<p class="description_ico">Gestione Categorie Bonus Premialit&agrave;</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="bonus_docente/archivio_report.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Archivio Report Bonus Premialit&agrave</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="dad/lista_descrittori.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Gestione descrittori DaD</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="dad/scrutini_dad.php" class="text-decoration-none">
+										<i class="fas fa-balance-scale fa-3x"></i>
+										<p class="description_ico">Gestione Scrutini DaD</p>
+									</a>
+								</div>
+		EOQ;
+
+							}
+							else if ($type_user==2){
+								echo <<< EOQ
+
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="scrutini/archivio_scrutinio_doc.php" class="text-decoration-none">
+										<i class="fas fa-clipboard-check fa-3x"></i>
+										<p class="description_ico">Gestione Voti Proposti</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="settings/edit.php" class="text-decoration-none">
+										<i class="fas fa-cog fa-3x"></i>
+										<p class="description_ico">Impostazioni</p>
+									</a>
+								</div>
+
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="certificazione_competenze/lista_profili.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Gestione Profili Certificazione Competenza</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="carta_docente/lista_categorie_spesa.php" class="text-decoration-none">
+										<i class="fas fa-file-signature fa-3x"></i>
+										<p class="description_ico">Gestione Categorie di Spesa</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="carta_docente/archivio_report.php" class="text-decoration-none">
+										<i class="fas fa-archive fa-3x"></i>
+										<p class="description_ico">Archivio Report Carta del Docente</p>
+									</a>
+								</div>
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="bonus_docente/lista_categorie_bonus.php" class="text-decoration-none">
+										<i class="fas fa-file-signature fa-3x"></i>
+										<p class="description_ico">Gestione Categorie Bonus Premialit&agrave;</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="bonus_docente/archivio_report.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Archivio Report Bonus Premialit&agrave;</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="dad/lista_descrittori.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Gestione descrittori DaD</p>
+									</a>
+								</div>
+		EOQ;
+
+							}
+
+						} else if ($type_user==3){
+
+							echo <<< EOQ
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="alunni/ricerca.php" class="text-decoration-none">
+										<i class="fas fa-search fa-3x"></i>
+										<p class="description_ico">Ricerca Alunni</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="incarichi/lista_sel.php" class="text-decoration-none">
+										<i class="fas fa-file-signature fa-3x"></i>
+										<p class="description_ico">Selezione Incarichi</p>
+									</a>
+								</div>
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="corsi/lista_sel.php" class="text-decoration-none">
+										<i class="fas fa-chart-bar fa-3x"></i>
+										<p class="description_ico">Selezione Corsi Aggiornamento</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="valutazione/valutazione.php" class="text-decoration-none">
+										<i class="fas fa-star-half-alt fa-3x"></i>
+										<p class="description_ico">Inserimento Valutazione</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="programmazione/archive.php" class="text-decoration-none">
+										<i class="fas fa-calendar-alt fa-3x"></i>
+										<p class="description_ico">Inserimento Programmazione</p>
+									</a>
+								</div>
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="valutazione/seleziona_report.php" class="text-decoration-none">
+										<i class="fas fa-archive fa-3x"></i>
+										<p class="description_ico">Report Valutazioni</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="diario/eventi.php" class="text-decoration-none">
+										<i class="fas fa-book-open fa-3x"></i>
+										<p class="description_ico">Diario di Bordo</p>
+									</a>
+								</div>
+
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="scrutini/archivio.php" class="text-decoration-none">
+										<i class="fas fa-clipboard-check fa-3x"></i>
+										<p class="description_ico">Inserimento Voti Proposti Scrutini</p>
+									</a>
+								</div>
+		EOQ;
+							$connect = connectDB();
+							$query = " SELECT * FROM ";
+							$query .= " doc_cla_map ";
+							$query .= " WHERE id_doc = ".$id_user;
+							$query .= " AND coordinatore = 1 ";
+
+							$result = mysqli_query($connect, $query);
+							if (!$result) {
+								$message  = 'Invalid query: ' . mysqli_error() . "\nWhole query: " . $query;
+								die($message);
+							}
+							$check = mysqli_num_rows($result);
+							disconnectDB($connect);
+
+
+							//if ($check>0 && $res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'SI') {
+		            // <a target="blank" href="scrutini/archivio_scrutinio.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="scrutini/archivio_scrutinio.php" class="text-decoration-none">
+										<i class="fas fa-balance-scale fa-3x"></i>
+										<p class="description_ico">Consultazione Scrutini</p>
+									</a>
+								</div>
+		EOQ;
+							//}
+							//else {
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="relazione_finale/archive.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Inserimento Relazione Finale</p>
+									</a>
+								</div>
+		EOQ;
+							//}
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="certificazione_competenze/lista_proposte.php" class="text-decoration-none">
+										<i class="fas fa-balance-scale fa-3x"></i>
+										<p class="description_ico">Inserimento Certificazioni Competenza Proposte</p>
+									</a>
+								</div>
+
+		EOQ;
+
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="carta_docente/lista_sel.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Inserimento Carta del Docente</p>
+									</a>
+								</div>
+		EOQ;
+
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="bonus_docente/lista_sel.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Inserimento Bonus Premialit&agrave Docente</p>
+									</a>
+								</div>
+
+		EOQ;
+
+								echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="dad/ins_valutazione_dad.php" class="text-decoration-none">
+										<i class="fas fa-video fa-3x"></i>
+										<p class="description_ico">Inserimento Valutazione DaD</p>
+									</a>
+								</div>
+
+		EOQ;
+								if ( ($res_select_abilitato['ALLOW_DSA_INS'] == 'SI') || isAllowDsaIns($array_s_login['id']) ) {
+										echo <<< EOQ
+								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
+									<a target="blank" href="dsa/lista_osservazioni.php" class="text-decoration-none">
+										<i class="fas fa-chart-line fa-3x"></i>
+										<p class="description_ico">Inserimento Osservazioni DSA</p>
+									</a>
+								</div>
+		EOQ;
+								}
+										echo <<< EOQ
+
+		EOQ;
+						}
+
+						echo <<< EOQ
+
+
+							</div>
+
+
+							<br />
+							<div>
+								<span class="checkbox">
+
+
+								</span>
+							</div>
+							<br />
+
+						</div>
+					</div>
+				</div>
 		<div class="clear">
 		</div>
 	</div>
