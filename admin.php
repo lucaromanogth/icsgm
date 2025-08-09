@@ -73,16 +73,16 @@ if (Verifica_Sess_Login($array_s_login)) {
 							<br />
 								Richiedine l'autorizzazione per l'utilizzo cliccando sul link seguente:
 							<br />
-								<a href="mailto:sistemi@$dominio?subject=Richiesta autorizzazione per l'utilizzo di risorse nel portale di amministrazione di $dominio"> Richiesta Autorizzazione</a>.
+								<a href="mailto:sistemi@<?php echo $dominio; ?>?subject=Richiesta autorizzazione per l'utilizzo di risorse nel portale di amministrazione di <?php echo $dominio; ?>"> Richiesta Autorizzazione</a>.
 							<br />
 							<br />
 		<?php
 							  $connect = connectDB();
-								$query = " SELECT * FROM ";
-								$query .= " inc_ute_map ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-								$result = mysqli_query($connect, $query);
+								$query = " SELECT * FROM inc_ute_map WHERE stato = 'DA APPROVARE' AND anno_scolastico = ?";
+								$stmt = mysqli_prepare($connect, $query);
+								mysqli_stmt_bind_param($stmt, "s", $anno_scolastico);
+								mysqli_stmt_execute($stmt);
+								$result = mysqli_stmt_get_result($stmt);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
 
@@ -102,12 +102,11 @@ if (Verifica_Sess_Login($array_s_login)) {
 		<?php
 								}
 
-								$query = " SELECT * FROM ";
-								$query .= " carta_docente ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-								$connect = connectDB();
-								$result = mysqli_query($connect, $query);
+								$query = " SELECT * FROM carta_docente WHERE stato = 'DA APPROVARE' AND anno_scolastico = ?";
+								$stmt = mysqli_prepare($connect, $query);
+								mysqli_stmt_bind_param($stmt, "s", $anno_scolastico);
+								mysqli_stmt_execute($stmt);
+								$result = mysqli_stmt_get_result($stmt);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
 
@@ -127,12 +126,11 @@ if (Verifica_Sess_Login($array_s_login)) {
 		<?php
 								}
 
-								$query = " SELECT * FROM ";
-								$query .= " bonus_docente ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-								$connect = connectDB();
-								$result = mysqli_query($connect, $query);
+								$query = " SELECT * FROM bonus_docente WHERE stato = 'DA APPROVARE' AND anno_scolastico = ?";
+								$stmt = mysqli_prepare($connect, $query);
+								mysqli_stmt_bind_param($stmt, "s", $anno_scolastico);
+								mysqli_stmt_execute($stmt);
+								$result = mysqli_stmt_get_result($stmt);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
 
@@ -152,11 +150,7 @@ if (Verifica_Sess_Login($array_s_login)) {
 		<?php
 								}
 
-								$query = " SELECT * FROM ";
-								$query .= " bonus_docente ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '2017-2018'";
-
-								$connect = connectDB();
+								$query = " SELECT * FROM bonus_docente WHERE stato = 'DA APPROVARE' AND anno_scolastico = '2017-2018'";
 								$result = mysqli_query($connect, $query);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
@@ -178,9 +172,11 @@ if (Verifica_Sess_Login($array_s_login)) {
 								}
 
 
-							$query = " SELECT * FROM live_meeting WHERE id_doc = $id_user ";
-							$connect = connectDB();
-							$result = mysqli_query($connect, $query);
+							$query = " SELECT * FROM live_meeting WHERE id_doc = ?";
+							$stmt = mysqli_prepare($connect, $query);
+							mysqli_stmt_bind_param($stmt, "i", $id_user);
+							mysqli_stmt_execute($stmt);
+							$result = mysqli_stmt_get_result($stmt);
 							$count = mysqli_num_rows($result);
 							disconnectDB($connect);
 
@@ -198,7 +194,7 @@ if (Verifica_Sess_Login($array_s_login)) {
 							<p>&nbsp;</p>
 
 
-								Per problemi di carattere tecnico contatta il servizio di <a href="mailto:sistemi@$dominio?subject=Segnalazione%20dalla%20pagina%20di%20Login%20del%20portale%20di%20amministrazione%20">assistenza</a>.
+								Per problemi di carattere tecnico contatta il servizio di <a href="mailto:sistemi@<?php echo $dominio; ?>?subject=Segnalazione%20dalla%20pagina%20di%20Login%20del%20portale%20di%20amministrazione%20">assistenza</a>.
 							<br />
 						</p>
 					</div>

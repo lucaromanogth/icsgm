@@ -32,9 +32,7 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 
 	if (Verifica_Sess_Login($array_s_login)) {
 
-       // VERIFICA OK!!!
-       echo <<< EOQ
-
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html id="ctl00_Html1" xmlns="http://www.w3.org/1999/xhtml" lang="it">
 
@@ -63,9 +61,9 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 						<p>
 							<strong><br/>Utente:
 								<div class="logon">
-		EOQ;
+		<?php
 								echo $array_s_login['username'];
-								echo <<< EOQ
+		?>
 								</div>
 								<br />
 								<a href="logout.php"> Logout</a>
@@ -81,24 +79,24 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 							<br />
 								Richiedine l'autorizzazione per l'utilizzo cliccando sul link seguente:
 							<br />
-								<a href="mailto:sistemi@$dominio?subject=Richiesta autorizzazione per l'utilizzo di risorse nel portale di amministrazione di $dominio"> Richiesta Autorizzazione</a>.
+								<a href="mailto:sistemi@<?php echo $dominio; ?>?subject=Richiesta autorizzazione per l'utilizzo di risorse nel portale di amministrazione di <?php echo $dominio; ?>"> Richiesta Autorizzazione</a>.
 							<br />
 							<br />
-		EOQ;
+		<?php
 							if ($type_user==2 || $type_user==1){
 								$connect = connectDB();
-								$query = " SELECT * FROM ";
-								$query .= " inc_ute_map ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-								$result = mysqli_query($connect, $query);
+								$query = " SELECT * FROM inc_ute_map WHERE stato = 'DA APPROVARE' AND anno_scolastico = ?";
+								$stmt = mysqli_prepare($connect, $query);
+								mysqli_stmt_bind_param($stmt, "s", $anno_scolastico);
+								mysqli_stmt_execute($stmt);
+								$result = mysqli_stmt_get_result($stmt);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
 
 								if ($count > 0) {
-									echo <<< EOQ
+		?>
 									<br><strong>
-		EOQ;
+		<?php
 								if ($count > 1) {
 									$richieste = 'richieste';
 								}
@@ -106,24 +104,23 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 									$richieste = 'richiesta ';
 								}
 									echo '<a class="moderatenews" href="incarichi/lista_moderazione_incarichi.php">Hai '.$count.' '.$richieste.' di inserimento incarichi da moderare.</a>';
-									echo <<< EOQ
+		?>
 									</strong>
-		EOQ;
+		<?php
 								}
 
-								$query = " SELECT * FROM ";
-								$query .= " carta_docente ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-								$connect = connectDB();
-								$result = mysqli_query($connect, $query);
+								$query = " SELECT * FROM carta_docente WHERE stato = 'DA APPROVARE' AND anno_scolastico = ?";
+								$stmt = mysqli_prepare($connect, $query);
+								mysqli_stmt_bind_param($stmt, "s", $anno_scolastico);
+								mysqli_stmt_execute($stmt);
+								$result = mysqli_stmt_get_result($stmt);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
 
 								if ($count > 0) {
-									echo <<< EOQ
+		?>
 									<br><strong>
-		EOQ;
+		<?php
 								if ($count > 1) {
 									$richieste = 'richieste';
 								}
@@ -131,24 +128,23 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 									$richieste = 'richiesta ';
 								}
 									echo '<br/><a class="moderatenews" href="carta_docente/lista_moderazione_carta.php">Hai '.$count.' '.$richieste.' di inserimento carta del docente da moderare.</a>';
-									echo <<< EOQ
+		?>
 									</strong>
-		EOQ;
+		<?php
 								}
 
-								$query = " SELECT * FROM ";
-								$query .= " bonus_docente ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '".$anno_scolastico."'";
-
-								$connect = connectDB();
-								$result = mysqli_query($connect, $query);
+								$query = " SELECT * FROM bonus_docente WHERE stato = 'DA APPROVARE' AND anno_scolastico = ?";
+								$stmt = mysqli_prepare($connect, $query);
+								mysqli_stmt_bind_param($stmt, "s", $anno_scolastico);
+								mysqli_stmt_execute($stmt);
+								$result = mysqli_stmt_get_result($stmt);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
 
 								if ($count > 0) {
-									echo <<< EOQ
+		?>
 									<br><strong>
-		EOQ;
+		<?php
 								if ($count > 1) {
 									$richieste = 'richieste';
 								}
@@ -156,24 +152,20 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 									$richieste = 'richiesta ';
 								}
 									echo '<br/><a class="moderatenews" href="bonus_docente/lista_moderazione_bonus.php">Hai '.$count.' '.$richieste.' di inserimento bonus premialit&agrave; docente da moderare.</a>';
-									echo <<< EOQ
+		?>
 									</strong>
-		EOQ;
+		<?php
 								}
 
-								$query = " SELECT * FROM ";
-								$query .= " bonus_docente ";
-								$query .= " WHERE stato = 'DA APPROVARE' AND anno_scolastico = '2017-2018'";
-
-								$connect = connectDB();
+								$query = " SELECT * FROM bonus_docente WHERE stato = 'DA APPROVARE' AND anno_scolastico = '2017-2018'";
 								$result = mysqli_query($connect, $query);
 								$count = mysqli_num_rows($result);
 								disconnectDB($connect);
 
 								if ($count > 0) {
-									echo <<< EOQ
+		?>
 									<br><strong>
-		EOQ;
+		<?php
 								if ($count > 1) {
 									$richieste = 'richieste';
 								}
@@ -181,21 +173,23 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 									$richieste = 'richiesta ';
 								}
 									echo '<br/><a class="moderatenews" href="bonus_docente/2017_2018/lista_moderazione_bonus.php">Hai '.$count.' '.$richieste.' di inserimento bonus premialit&agrave; docente a.s. 2017-2018 da moderare.</a>';
-									echo <<< EOQ
+		?>
 									</strong>
-		EOQ;
+		<?php
 								}
 							}
 
 							echo '<br/>
 							Accesso alla casella di posta elettronica:</strong>
 							<strong><a class="moderatenews" href="https://webmail.aruba.it/">WebMail Aruba</a></strong>';
-									echo <<< EOQ
-		EOQ;
+		?>
+		<?php
 
-							$query = " SELECT * FROM live_meeting WHERE id_doc = $id_user ";
-							$connect = connectDB();
-							$result = mysqli_query($connect, $query);
+							$query = " SELECT * FROM live_meeting WHERE id_doc = ?";
+							$stmt = mysqli_prepare($connect, $query);
+							mysqli_stmt_bind_param($stmt, "i", $id_user);
+							mysqli_stmt_execute($stmt);
+							$result = mysqli_stmt_get_result($stmt);
 							$count = mysqli_num_rows($result);
 							disconnectDB($connect);
 
@@ -205,10 +199,9 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 								echo 'Accesso al </strong> <strong><a class="moderatenews" href="live/live.php">Live Meeting</a></strong>';
 							}
 
-							echo <<< EOQ
-		EOQ;
-
-							echo <<< EOQ
+		?>
+		<?php
+		?>
 
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
@@ -216,7 +209,7 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 							<p>&nbsp;</p>
 
 
-								Per problemi di carattere tecnico contatta il servizio di <a href="mailto:sistemi@$dominio?subject=Segnalazione%20dalla%20pagina%20di%20Login%20del%20portale%20di%20amministrazione%20">assistenza</a>.
+								Per problemi di carattere tecnico contatta il servizio di <a href="mailto:sistemi@<?php echo $dominio; ?>?subject=Segnalazione%20dalla%20pagina%20di%20Login%20del%20portale%20di%20amministrazione%20">assistenza</a>.
 							<br />
 						</p>
 					</div>
@@ -232,17 +225,17 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 							</p>
 							<p class="info">
 							</p>
-		EOQ;
+		<?php
 
 							$connect = connectDB();
 							$res_select_abilitato = getUserAllows($array_s_login);
 							disconnectDB($connect);
-							echo <<< EOQ
+		?>
 							<div class="row">
-		EOQ;
+		<?php
 						if ($type_user==2 || $type_user==1){
 
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="users/archive.php" class="text-decoration-none">
 										<i class="fas fa-users fa-3x"></i>
@@ -312,10 +305,10 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 										<p class="description_ico">Archivio Report Incarichi</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 
 							if ($type_user==1){
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="programmazione/lista_programmazioni.php" class="text-decoration-none">
 										<i class="fas fa-archive fa-3x"></i>
@@ -418,11 +411,11 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 										<p class="description_ico">Gestione Scrutini DaD</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 
 							}
 							else if ($type_user==2){
-								echo <<< EOQ
+		?>
 
 
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
@@ -480,13 +473,13 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 										<p class="description_ico">Gestione descrittori DaD</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 
 							}
 
 						} else if ($type_user==3){
 
-							echo <<< EOQ
+		?>
 
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="alunni/ricerca.php" class="text-decoration-none">
@@ -541,14 +534,13 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 										<p class="description_ico">Inserimento Voti Proposti Scrutini</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 							$connect = connectDB();
-							$query = " SELECT * FROM ";
-							$query .= " doc_cla_map ";
-							$query .= " WHERE id_doc = ".$id_user;
-							$query .= " AND coordinatore = 1 ";
-
-							$result = mysqli_query($connect, $query);
+							$query = " SELECT * FROM doc_cla_map WHERE id_doc = ? AND coordinatore = 1";
+							$stmt = mysqli_prepare($connect, $query);
+							mysqli_stmt_bind_param($stmt, "i", $id_user);
+							mysqli_stmt_execute($stmt);
+							$result = mysqli_stmt_get_result($stmt);
 							if (!$result) {
 								$message  = 'Invalid query: ' . mysqli_error() . "\nWhole query: " . $query;
 								die($message);
@@ -559,26 +551,26 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 
 							//if ($check>0 && $res_select_abilitato['ALLOW_SCRUTINI_INS'] == 'SI') {
 		            // <a target="blank" href="scrutini/archivio_scrutinio.php"><img src="img/scrutini_on.png" alt="scrutini" width="60" height="60"></img></a>
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="scrutini/archivio_scrutinio.php" class="text-decoration-none">
 										<i class="fas fa-balance-scale fa-3x"></i>
 										<p class="description_ico">Consultazione Scrutini</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 							//}
 							//else {
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="relazione_finale/archive.php" class="text-decoration-none">
 										<i class="fas fa-chart-line fa-3x"></i>
 										<p class="description_ico">Inserimento Relazione Finale</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 							//}
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="certificazione_competenze/lista_proposte.php" class="text-decoration-none">
 										<i class="fas fa-balance-scale fa-3x"></i>
@@ -586,18 +578,18 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 									</a>
 								</div>
 
-		EOQ;
+		<?php
 
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="carta_docente/lista_sel.php" class="text-decoration-none">
 										<i class="fas fa-chart-line fa-3x"></i>
 										<p class="description_ico">Inserimento Carta del Docente</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="bonus_docente/lista_sel.php" class="text-decoration-none">
 										<i class="fas fa-chart-line fa-3x"></i>
@@ -605,9 +597,9 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 									</a>
 								</div>
 
-		EOQ;
+		<?php
 
-								echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="dad/ins_valutazione_dad.php" class="text-decoration-none">
 										<i class="fas fa-video fa-3x"></i>
@@ -615,23 +607,23 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 									</a>
 								</div>
 
-		EOQ;
+		<?php
 								if ( ($res_select_abilitato['ALLOW_DSA_INS'] == 'SI') || isAllowDsaIns($array_s_login['id']) ) {
-										echo <<< EOQ
+		?>
 								<div class="col-6 col-md-4 col-lg-2 text-center mb-4">
 									<a target="blank" href="dsa/lista_osservazioni.php" class="text-decoration-none">
 										<i class="fas fa-chart-line fa-3x"></i>
 										<p class="description_ico">Inserimento Osservazioni DSA</p>
 									</a>
 								</div>
-		EOQ;
+		<?php
 								}
-										echo <<< EOQ
+		?>
 
-		EOQ;
+		<?php
 						}
 
-						echo <<< EOQ
+		?>
 
 
 							</div>
@@ -657,7 +649,7 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 	<!-- inizio footer -->
 	<div class="footer" style="margin-top:120pt">
 		<div class="clear"></div>
-		<div id="copyright">$footer</div>
+		<div id="copyright"><?php echo $footer; ?></div>
         <div class="clear"></div>
 	</div>
 	<!-- fine footer -->
@@ -667,7 +659,7 @@ if (isset($_SESSION["S_LOGIN"]) && !empty($_SESSION["S_LOGIN"]))
 </html>
 
 
-EOQ;
+<?php
 
 exit;
     }
